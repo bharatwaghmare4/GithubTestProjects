@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.evalueserve.cms.mapper.PageMapper">
+
+	<resultMap id="PageResults" type="com.evalueserve.cms.beans.Page" >
+		<id property="pageID" column="PageId" />
+		<result property="pageName" column="PageName" />
+		<result property="isActive" column="IsActive" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="updatedBy" column="UpdatedBy" />
+	</resultMap>
+
+	<select id="getAllPageDetails" resultMap="PageResults" >
+		SELECT PageId,PageName,IsActive,CreatedBy,UpdatedBy FROM TM_PAGE
+	</select>
+	
+	<select id="getPageById" parameterType="int" resultType="com.evalueserve.cms.beans.Page">
+		SELECT PageId,PageName,IsActive,CreatedBy,UpdatedBy FROM TM_PAGE
+		WHERE PageId = #{Id}
+	</select>
+
+	 <insert id="addPage" parameterType="com.evalueserve.cms.beans.Page" useGeneratedKeys="true" keyProperty="pageID">  >
+		INSERT INTO TM_PAGE (PageName, IsActive, CreatedBy,UpdatedBy)
+		VALUES(#{PageName},#{IsActive},#{createdBy},#{updatedBy})
+	</insert>
+
+	 <!-- <update id="updateSomething" parameterType="#modelname">
+		UPDATE tablename1
+		SET
+		columnname1=#{param1}
+		WHERE
+		columnname2 = #{param2}
+	</update> -->
+
+	<delete id="deletePage" parameterType="int">
+		DELETE FROM TM_PAGE WHERE
+		PageId = #{PageId}
+	</delete> 
+
+</mapper>

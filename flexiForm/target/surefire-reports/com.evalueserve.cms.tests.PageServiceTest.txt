@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: com.evalueserve.cms.tests.PageServiceTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.016 sec <<< FAILURE! - in com.evalueserve.cms.tests.PageServiceTest
+testGetPageById(com.evalueserve.cms.tests.PageServiceTest)  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.AssertionError
+	at com.evalueserve.cms.tests.PageServiceTest.testGetPageById(PageServiceTest.java:58)
+
+testGetAllPageDetails(com.evalueserve.cms.tests.PageServiceTest)  Time elapsed: 0.016 sec  <<< FAILURE!
+java.lang.AssertionError
+	at com.evalueserve.cms.tests.PageServiceTest.testGetAllPageDetails(PageServiceTest.java:42)
+

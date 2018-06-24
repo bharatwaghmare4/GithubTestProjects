@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.evalueserve.cms.mapper.PageControlsMappingMapper">
+
+	<resultMap type="com.evalueserve.cms.beans.PageControlsMapping"
+		id="pageControlMappingResults">
+		<id property="pageControlId" column="PageControlId" />
+		<!-- <result property="pageId" column="PageId" /> <result property="controlId" 
+			column="ControlId" /> -->
+		<result property="fieldId" column="FieldId" />
+		<result property="isReadOnly" column="IsReadonly" />
+		<result property="fieldValue" column="FieldValue" />
+		<result property="isCompulsory" column="IsCompulsory" />
+		<result property="sequenceId" column="SequenceId" />
+		<result property="createdBy" column="CreatedBy" />
+		<result property="createdOn" column="CreatedOn" />
+		<result property="updatedBy" column="UpdatedBy" />
+		<result property="updateOn" column="UpdatedOn" />
+		 <association property="fieldValidationMapping" column="idFieldValidationMapping" javaType="FieldValidationMapping"  select="selectFieldValidation" >
+		 <id property="validationId" column="ValidationId" />
+			<result property="pageControlId" column="PageControlId" />
+			<result property="required" column="Required" />
+			<result property="minLength" column="MinLength" />
+			<result property="maxLength" column="MaxLength" />
+			<result property="email" column="Email" />
+			<result property="pattern" column="Pattern" />
+		 </association>
+		<collection property="pages" ofType="Page"
+			column="idPageControlMapping_Pages" javaType="ArrayList" notNullColumn="PageId">
+			<id property="pageID" column="PageId" />
+			<result property="pageName" column="PageName" />
+			<result property="isActive" column="IsActive" />
+			<result property="createdBy" column="CreatedBy" />
+			<result property="updatedBy" column="UpdatedBy" />
+		</collection>
+		<collection property="controls" ofType="Controls"
+			column="idPageControlMapping_Controls" javaType="ArrayList" notNullColumn="ControlId"> 
+			<id property="controlId" column="ControlId" />
+			<result property="controlName" column="ControlName" />
+			<result property="controlType" column="ControlType" />
+			<result property="createdBy" column="CreatedBy" />
+			<result property="updatedBy" column="UpdatedBy" />
+		</collection>
+	
+	</resultMap>
+
+	<select id="getPageControlMapping" resultMap="pageControlMappingResults">
+		select
+		tm_p.PageId,
+		tm_p.PageName,
+		tx_pcm.PageControlId,
+		tx_pcm.FieldId,
+		tx_pcm.IsReadonly,
+		tx_pcm.FieldValue,
+		tx_pcm.IsCompulsory,
+		tx_pcm.SequenceId,
+		tm_c.ControlId,
+		tm_c.ControlName,
+		tm_c.ControlType,
+		 tx_v.Required,
+		tx_v.MinLength,
+		tx_v.MaxLength,
+		tx_v.Email,
+		tx_v.Pattern 
+		from tx_pagecontrolsmapping as tx_pcm
+		join tm_page as tm_p on
+		tx_pcm.PageId = tm_p.PageId
+		join tm_controls as tm_c on
+		tx_pcm.ControlId = tm_c.ControlId 
+		 left join tx_fieldvalidationmapping
+		as tx_v on tx_pcm.PageControlId = tx_v.PageControlId 
+		where
+		tm_p.PageName= 'requestform' and tm_p.IsActive = 1;
+	</select>
+
+	<select id="getPageControlMappingById" parameterType="int"
+		resultType="com.evalueserve.cms.beans.PageControlsMapping">
+		SELECT * FROM TX_PAGECONTROLSMAPPING WHERE PageControlId = #{pageControlID}
+	</select>
+	
+	<select id="selectFieldValidation" parameterType="int" resultType="FieldValidationMapping">    
+  SELECT ValidationId ,Required, MinLength, MaxLength ,Email,Pattern FROM tx_fieldvalidationmapping WHERE PageControlId = #{PageControlId}
+  </select> 
+	<!-- <insert id="insertSomething" parameterType="#modelname"> INSERT INTO 
+		tablename1 (columnname1, columnname2, columnname3) VALUES(#{value1},#{value2},#{value3}) 
+		</insert> <update id="updateSomething" parameterType="#modelname"> UPDATE 
+		tablename1 SET columnname1=#{param1} WHERE columnname2 = #{param2} </update> 
+		<delete id="deleteSomething" parameterType="int"> DELETE FROM tablename1 
+		WHERE columnname1 = #{param1} </delete> -->
+
+</mapper>
