@@ -23,7 +23,7 @@ public class PageControlMappingServiceTest {
 
 	@BeforeClass
 	public static void setUp() {
-		LOGGER.debug("Test setup [start]");
+		LOGGER.debug("Test setup method [start]");
 		pageControlMappingService = new PageControlsMappingServiceImpl();
 		LOGGER.debug("Test setup [end]");
 	}
